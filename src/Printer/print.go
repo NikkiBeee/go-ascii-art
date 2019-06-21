@@ -9,12 +9,13 @@ import (
 	// "reflect"
 	"image/jpeg"
 	"image/color"
+	"./resize"
 )
 
 
 
 func main() {
-	i, err := os.Open("../AsciiArt/dot.jpg")
+	i, err := os.Open("../AsciiArt/dotLarge.jpg")
 	if err != nil {
 		log.Fatal("Err in open: ", err)
 	}
@@ -22,6 +23,14 @@ func main() {
 	if err != nil {
 		log.Fatal("Err in image: ", err)
 	}
+
+	ratio := imageData.Bounds().Max.Y / imageData.Bounds().Max.X
+
+	h := 15 * ratio
+
+	imageResize := resize.Resize(30, uint(h), imageData, resize.MitchellNetravali)
+
+	// fmt.Print(imageResize)
 
 	// var size int64 = len([]imageData)
 	// fmt.Print("imageData: ", imageData.Bounds())
@@ -36,13 +45,13 @@ func main() {
 
 	
 	
-	for y := imageData.Bounds().Min.Y; y < imageData.Bounds().Max.Y; y++ {
-		for x := imageData.Bounds().Min.X; x < imageData.Bounds().Max.X; x++ {
-			c := color.GrayModel.Convert(imageData.At(x,y)).(color.Gray)
+	for y := 0; y < h; y++ {
+		for x := 0; x < 30; x++ {
+			c := color.GrayModel.Convert(imageResize.At(x,y)).(color.Gray)
 			if  c.Y >  50 {
-				fmt.Print("  ")
+				fmt.Print(" ")
 			} else {
-				fmt.Print("**")
+				fmt.Print("*")
 			}
 		}
 		fmt.Print("\n")
