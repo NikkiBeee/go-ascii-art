@@ -7,7 +7,9 @@ import (
 	// "io/ioutil"
 	// "strconv"
 	// "reflect"
+	// "image"
 	"image/jpeg"
+	// "image/png"
 	"image/color"
 	"./resize"
 )
@@ -15,7 +17,7 @@ import (
 
 
 func main() {
-	i, err := os.Open("../AsciiArt/dotLarge.jpg")
+	i, err := os.Open("../AsciiArt/BlackWhiteRubberDuckJPEG.jpg")
 	if err != nil {
 		log.Fatal("Err in open: ", err)
 	}
@@ -24,13 +26,16 @@ func main() {
 		log.Fatal("Err in image: ", err)
 	}
 
-	ratio := imageData.Bounds().Max.Y / imageData.Bounds().Max.X
+	var ratio, w, h float64
+	ratio = (float64(imageData.Bounds().Max.Y) / float64(imageData.Bounds().Max.X))
 
-	h := 15 * ratio
+	w = 70
+	h = (w / 2) * ratio
 
-	imageResize := resize.Resize(30, uint(h), imageData, resize.MitchellNetravali)
+	imageResize := resize.Resize(uint(w), uint(h), imageData, resize.MitchellNetravali)
 
-	// fmt.Print(imageResize)
+	fmt.Print("H", h)
+	fmt.Print("ratio", ratio)
 
 	// var size int64 = len([]imageData)
 	// fmt.Print("imageData: ", imageData.Bounds())
@@ -45,10 +50,10 @@ func main() {
 
 	
 	
-	for y := 0; y < h; y++ {
-		for x := 0; x < 30; x++ {
+	for y := 0; y < int(h); y++ {
+		for x := 0; x < int(w); x++ {
 			c := color.GrayModel.Convert(imageResize.At(x,y)).(color.Gray)
-			if  c.Y >  50 {
+			if  c.Y >  200 {
 				fmt.Print(" ")
 			} else {
 				fmt.Print("*")
