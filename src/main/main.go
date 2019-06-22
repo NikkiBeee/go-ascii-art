@@ -1,18 +1,14 @@
 package main
 
 import (
-		"fmt"
-		"net/http"
-		"html/template")
+	"fmt"
+	"net/http"
 
-
-func indexHandler (w http.ResponseWriter, r *http.Request){
-	t, err := template.ParseFiles("index.html")
-	fmt.Println(err)
-	t.Execute(w, nil)
-}
+	"./routes"
+)
 
 func main() {
-	http.HandleFunc("/", indexHandler)
+	fmt.Println("main is running")
+	routes.SetupRoutes()
 	http.ListenAndServe(":8000", nil)
 }
