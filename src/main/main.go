@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	fmt.Println("main is running")
+	// fmt.Println("main is running")
 	routes.SetupRoutes()
 	http.ListenAndServe(":8000", nil)
 }

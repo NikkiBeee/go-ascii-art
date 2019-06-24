@@ -1,7 +1,6 @@
 package print
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -55,6 +54,6 @@ func Printer(image string) string {
 		newString += "\n"
 	}
 
-	fmt.Print(newString)
+	// fmt.Print(newString)
 	return newString
 }

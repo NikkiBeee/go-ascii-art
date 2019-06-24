@@ -25,8 +25,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func errorHandler(w http.ResponseWriter, r *http.Request) {
-	printOut := print.Printer("../AsciiArt/errorJPEG.jpg")
-	p := AsciiArt{Homepage: "nil", Header: "nil", Created: printOut}
+	printOutE := print.Printer("../AsciiArt/errorJPEG.jpg")
+	p := AsciiArt{Homepage: "nil", Header: "nil", Created: printOutE}
 	t, _ := template.ParseFiles("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/main/public/error.html")
 	t.Execute(w, p)
 }
@@ -40,29 +40,31 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(10 << 20)
 	file, _, err := r.FormFile("userImage")
 	if err != nil {
-		fmt.Println("Error in retrieving file from form data")
-		fmt.Println(err)
+		printOutE := print.Printer("../AsciiArt/errorJPEG.jpg")
+		p := AsciiArt{Homepage: "nil", Header: "nil", Created: printOutE}
+		t, _ := template.ParseFiles("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/main/public/error.html")
+		t.Execute(w, p)
 	}
 	defer file.Close()
-	fmt.Printf("uploaded file")
+	// fmt.Printf("uploaded file")
 
 	userFile, err := ioutil.TempFile("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/AsciiArt/userImages", "user-*.jpeg")
 	fmt.Println(userFile.Name())
 
 	if err != nil {
-		fmt.Println("Error in storing tempfile")
-		fmt.Println(err)
-		return
-		//PLaceholder for redirect to an Error page
+		printOutE := print.Printer("../AsciiArt/errorJPEG.jpg")
+		p := AsciiArt{Homepage: "nil", Header: "nil", Created: printOutE}
+		t, _ := template.ParseFiles("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/main/public/error.html")
+		t.Execute(w, p)
 	}
 	defer userFile.Close()
 
 	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
-		fmt.Println("Error in reading file")
-		fmt.Println(err)
-		return
-		//PLaceholder for redirect to an Error page
+		printOutE := print.Printer("../AsciiArt/errorJPEG.jpg")
+		p := AsciiArt{Homepage: "nil", Header: "nil", Created: printOutE}
+		t, _ := template.ParseFiles("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/main/public/error.html")
+		t.Execute(w, p)
 	}
 	userFile.Write(fileBytes)
 
