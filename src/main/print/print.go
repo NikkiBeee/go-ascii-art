@@ -17,7 +17,7 @@ import (
 )
 
 func Printer(image string) string {
-	fmt.Println("Print is running")
+	// fmt.Println("Print is running")
 	i, err := os.Open(image)
 	if err != nil {
 		log.Fatal("Err in open: ", err)
@@ -30,8 +30,8 @@ func Printer(image string) string {
 	var ratio, w, h float64
 	ratio = (float64(imageData.Bounds().Max.Y) / float64(imageData.Bounds().Max.X))
 
-	w = 70
-	h = (w / 2) * ratio
+	w = 300
+	h = (w) * ratio
 
 	imageResize := resize.Resize(uint(w), uint(h), imageData, resize.MitchellNetravali)
 
@@ -41,15 +41,15 @@ func Printer(image string) string {
 		for x := 0; x < int(w); x++ {
 			c := color.GrayModel.Convert(imageResize.At(x, y)).(color.Gray)
 			if c.Y > 200 {
-				newString += " "
+				newString += "  "
 			} else if c.Y > 180 {
-				newString += "*"
+				newString += " *"
 			} else if c.Y > 100 {
-				newString += "'"
+				newString += "**"
 			} else if c.Y > 50 {
-				newString += "."
+				newString += " ."
 			} else {
-				newString += "`"
+				newString += ".."
 			}
 		}
 		newString += "\n"

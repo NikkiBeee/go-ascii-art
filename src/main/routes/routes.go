@@ -11,12 +11,24 @@ import (
 )
 
 type AsciiArt struct {
-	Art string
+	Header   string
+	Homepage string
+	Created  string
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
+	printOut := print.Printer("../AsciiArt/t-simpsons-oral-history-august-2007.jpg")
+	printOutH := print.Printer("../AsciiArt/headerHomeJPEG.jpg")
+	p := AsciiArt{Homepage: printOut, Header: printOutH, Created: "nil"}
 	t, _ := template.ParseFiles("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/main/public/index.html")
-	t.Execute(w, nil)
+	t.Execute(w, p)
+}
+
+func errorHandler(w http.ResponseWriter, r *http.Request) {
+	printOut := print.Printer("../AsciiArt/errorJPEG.jpg")
+	p := AsciiArt{Homepage: "nil", Header: "nil", Created: printOut}
+	t, _ := template.ParseFiles("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/main/public/error.html")
+	t.Execute(w, p)
 }
 
 func cssHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,8 +37,6 @@ func cssHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func createHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("createHandler is running")
-
 	r.ParseMultipartForm(10 << 20)
 	file, _, err := r.FormFile("userImage")
 	if err != nil {
@@ -56,24 +66,24 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	userFile.Write(fileBytes)
 
-	fmt.Println("fileUploaded")
-
 	printOut := print.Printer(userFile.Name())
+	printOutH := print.Printer("../AsciiArt/art2JPEG.jpg")
 
 	defer os.Remove(userFile.Name())
 
-	p := AsciiArt{Art: printOut}
+	p := AsciiArt{Homepage: "nil", Header: printOutH, Created: printOut}
 
 	t, _ := template.ParseFiles("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/main/public/create.html")
 	t.Execute(w, p)
 
 }
 func SetupRoutes() {
-	fmt.Println("setup is running")
-	http.Handle("*", http.FileServer(http.Dir("/public")))
+	// fmt.Println("setup is running")
+	// http.Handle("*", http.FileServer(http.Dir("/public")))
+	http.HandleFunc("/oops", errorHandler)
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/create", createHandler)
 
-	fmt.Println("setup is running 2")
+	// fmt.Println("setup is running 2")
 
 }
