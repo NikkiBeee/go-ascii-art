@@ -13,11 +13,12 @@
 <body style="color:white; background:black; font-family: 'Inconsolata', monospace;">
     <div style="margin: 3rem;">
         <pre style="text-align: center; font-size: 2px; margin: 20px;">{{.Header}}</pre>
-        <div>
+        <hr size="3" color="grey">
+        <div style="margin-top: 50px;">
             <div style="float: left; width: 40vw;"><pre style="text-align: center; font-size: 2px">{{.Homepage}}</pre></div>
             <div style="float: right; width: 40vw; text-align: center;">
                 <h3 style="text-align: center;">Upload a (jpeg) pic here</h3>
-                <form action="/create" enctype="multipart/form-data" method="POST" onsubmit="alert('Working on your request!')">
+                <form action="/api/create" enctype="multipart/form-data" method="POST" >
                 
                     <input type="file" name="userImage" accept="*.jpeg" >
                     <input     type="submit" value="Upload">

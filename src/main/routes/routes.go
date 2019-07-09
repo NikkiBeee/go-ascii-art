@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -22,6 +21,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	p := AsciiArt{Homepage: printOut, Header: printOutH, Created: "nil"}
 	t, _ := template.ParseFiles("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/main/public/index.html")
 	t.Execute(w, p)
+
 }
 
 func errorHandler(w http.ResponseWriter, r *http.Request) {
@@ -46,10 +46,8 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, p)
 	}
 	defer file.Close()
-	// fmt.Printf("uploaded file")
 
 	userFile, err := ioutil.TempFile("/Users/nicolebent/Desktop/GHP_1094/Senior-Phase/stackathon/src/AsciiArt/userImages", "user-*.jpeg")
-	fmt.Println(userFile.Name())
 
 	if err != nil {
 		printOutE := print.Printer("../AsciiArt/errorJPEG.jpg")
@@ -80,12 +78,8 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 func SetupRoutes() {
-	// fmt.Println("setup is running")
-	// http.Handle("*", http.FileServer(http.Dir("/public")))
 	http.HandleFunc("/oops", errorHandler)
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/create", createHandler)
-
-	// fmt.Println("setup is running 2")
 
 }
